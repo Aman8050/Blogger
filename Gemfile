@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+
+gem 'rails', '4.0.0'
+gem 'mysql', '~> 2.9', '>= 2.9.1'
+gem 'sass', '~> 3.4', '>= 3.4.21'
+gem 'coffee-rails', '~> 4.1'
+gem 'jquery-rails'
+gem 'haml', '~> 4.0', '>= 4.0.7'
+gem 'simple_form', '~> 3.2'
+gem 'devise', '~> 3.5', '>= 3.5.5'
+gem 'thin'
+gem 'turbolinks'
