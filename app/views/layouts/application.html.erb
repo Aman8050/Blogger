@@ -4,51 +4,86 @@
   <title>Blog</title>
   <%= stylesheet_link_tag    'application', media: 'all', "data-turbolinks-track" => true %>
   <%= stylesheet_link_tag 'application', 'http://fonts.googleapis.com/css?family=Raleway:400,700' %>
+  <%= stylesheet_link_tag "bootstrap-theme.min" %>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  
+  <%= stylesheet_link_tag "team-recursion" %>
+  <%= stylesheet_link_tag "about" %>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
 
 <body>
-   <div id="sidebar">
+    <div id="sidebar">
       <div id="logo">
       	<%= link_to root_path do %>
-      		<%= image_tag "a.jpg" %>
+      		<%= image_tag "nitlogo1.png" %>
       	<% end %>
       </div>
 
       <ul>
          <li class="category">Website</li>
+         <li><%= link_to "About", about_path %></li>
+         <li><%= link_to "Tutorials",tutorials_path %></li>
          <li><%= link_to "Blog",root_path %></li>
-         <li>About</li>
+         <li><%= link_to "Contact Us", contact_path %></li>
+         <li><%= link_to "Discussion Forum", discuss_path %></li>
+
       </ul>
 
       <ul>
       	<li class="category">Social</li>
-      	<li><a href="http://github.com/aman8050">Github</a></li>
-      	<li><a href="http://linkedln.com/aman8050">Linkedln</a></li>
+      	<li><a href="http://spoj.com">Spoj</a></li>
+      	<li><a href="http://hackerrank.com">Hackerrank</a></li>
       	<li><a href="http://codechef.com/aman8050">Codechef</a></li>
       	<li></li>
       </ul>
 
-      <p class="sign_in">Admin Login</p>
-   </div>
-  <div id="main_content">
-    <div id="header">
-     <p>All Posts</p>
-
-     <div class="buttons">
-      <button class="button"><%= link_to "New Post", new_post_path %></button>
-      <button class="button">Log Out</button>
-     </div>
+      <% if !user_signed_in? %>
+        <p class="sign_in">Admin Login</p>
+      <% end  %>
     </div>
-    <% flash.each do |name, msg| %>
-      <%= content_tag(:div, msg, class: "alert") %>
-    <% end %>
-    <%= yield %>
-  </div>
+    
+    <div id="main_content">
+      <div id="header">
+        <% if current_page?(root_path) %>
+            <p>All Posts</p>
+        <% elsif current_page?(about_path) %> 
+            <p>About Recursion</p>
+        <% elsif current_page?(discuss_path) %> 
+            <p>Discussion Forum</p>  
+        <% elsif current_page?(tutorials_path) %> 
+            <p>Tutorials</p>  
+        <% elsif current_page?(contact_path) %> 
+            <p>Contact Us</p> 
+        <% else %>
+            <% link_to "Back to All Posts", root_path %>
+        <% end %> 
 
-
-
-
+      <% if user_signed_in? %>
+        <% if current_page?(root_path) %>
+        <div class="buttons">
+          <button class="button"><%= link_to "New Post", new_post_path %></button>
+          <button class="button"><%= link_to "Log Out", destroy_user_session_path, :method => :delete %></button>
+        </div>
+        <% elsif current_page?(discuss_path) %>
+        <div class="buttons">
+          <button class="button"><%= link_to "New Discuss"%></button>
+          <button class="button"><%= link_to "Log Out", destroy_user_session_path,:method => :delete %></button>
+        </div>
+        <% end %>
+      </div>
+      <% else %>
+        <div class="buttons">
+          <button class="button"><%= link_to "Sign in", new_post_path %></button>
+        </div>
+      <% end %>
+      <% flash.each do |name, msg| %>
+        <%= content_tag(:div, msg, class: "alert") %>
+      <% end %>
+      <%= yield %>
+    </div>
 </body>
 </html>
